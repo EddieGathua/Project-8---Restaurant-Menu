@@ -3,7 +3,7 @@ const menu = [
     id: 1,
     title: "Croissants",
     category: "Breakfast",
-    price: 12,
+    price: 12.99,
     img: "images/menu-item1.jpg",
     desc: "This timeless pastry has the perfect buttery taste, a flaky texture and a fluffy interior that will leave you wanting more and more",
   },
@@ -27,8 +27,8 @@ const menu = [
     id: 4,
     title: "Buttermilk Pancakes",
     category: "Breakfast",
-    price: 12,
-    img: "images/menu-item4.jpg",
+    price: 9.99,
+    img: "images/menu-item4.jpeg",
     desc: "Five pancakes made from our flour milled in the smokies, served with our homemade maple syrup, and real whipped butter",
   },
   {
@@ -36,7 +36,7 @@ const menu = [
     title: "Burger and Fries",
     category: "Lunch",
     price: 23.99,
-    img: "images/menu-item5.jpg",
+    img: "images/menu-item5.jpeg",
     desc: "Our beef burgers are made from natural and delicious ingredients which are made to order and served as per your request on toasty, classic buns with a side of tasty french fries and a sauce of your choice.",
   },
   {
@@ -44,7 +44,7 @@ const menu = [
     title: "Godzilla Milkshake",
     category: "Desserts",
     price: 18.99,
-    img: "images/menu-item6.jpg",
+    img: "images/menu-item6.jpeg",
     desc: "This milkshake comes in three flavours namely, Strawberry, Chocolate and Vanilla topped off with a flavoured and cream-covered donut and toppings of your choice.",
   },
   {
@@ -52,7 +52,7 @@ const menu = [
     title: "Eggs and Baked Beans",
     category: "Breakfast",
     price: 7.99,
-    img: "images/menu-item7.jpg",
+    img: "images/menu-item7.jpeg",
     desc: "Two eggs, your style, and a side of baked beans served with a slice of bread",
   },
   {
@@ -60,7 +60,7 @@ const menu = [
     title: "Oreo Milkshake",
     category: "Desserts",
     price: 15,
-    img: "images/menu-item8.jpg",
+    img: "images/menu-item8.jpeg",
     desc: "Classic chocolate milkshake topped off with chocolate ice-cream and crushed oreos with a side of oreos. Perfect for your sweet tooth.",
   },
   {
@@ -96,3 +96,46 @@ const menu = [
     desc: "Classic spaghetti served with a spicy meat dish garnished with parsley and mozzarela cheese and a side of salsa",
   },
 ];
+
+const sectionCenter = document.querySelector(".section-center");
+const filterBtns = document.querySelectorAll(".filter-btn");
+
+//load items
+window.addEventListener("DOMContentLoaded", () => {
+  displayMenuItems(menu);
+});
+
+//filter items
+filterBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    const category = e.currentTarget.dataset.id;
+    const menuCategory = menu.filter((menuItem) => {
+      if (menuItem.category === category) {
+        return menuItem;
+      }
+    });
+    if (category === "All") {
+      displayMenuItems(menu);
+    } else {
+      displayMenuItems(menuCategory);
+    }
+  });
+});
+
+function displayMenuItems(menuItems) {
+  let displayMenu = menuItems.map((item) => {
+    return ` <article class="menu-item">
+  <img src= ${item.img} class="photo" alt= ${item.title} />
+    <div class="item-info">
+      <header>
+        <h4>${item.title}</h4>
+        <h4 class="price">$${item.price}</h4>
+      </header>
+      <p class="item-text">${item.desc}</p>
+    </div>
+  </article>`;
+  });
+
+  displayMenu = displayMenu.join("");
+  sectionCenter.innerHTML = displayMenu;
+}
