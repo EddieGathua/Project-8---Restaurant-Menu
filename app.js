@@ -77,7 +77,7 @@ const menu = [
     category: "Drinks",
     price: 10.99,
     img: "images/menu-item10.jpg",
-    desc: "This cocktail is made of vodka, tequila, light rum, triple sec, gin and a splash of cola. The perfect way to unwind after a long day !",
+    desc: "This cocktail is made of vodka, tequila, light rum, triple sec, gin and a splash of cola. The perfect way to unwind after a long day!",
   },
   {
     id: 11,
@@ -85,7 +85,7 @@ const menu = [
     category: "Drinks",
     price: 7.99,
     img: "images/menu-item11.jpg",
-    desc: "A chilled drink made cold-steeped chai, honey syrup and milk that is perfect for the hot weather !",
+    desc: "A chilled drink made cold-steeped chai, honey syrup and milk that is perfect for the hot weather!",
   },
   {
     id: 12,
@@ -98,29 +98,49 @@ const menu = [
 ];
 
 const sectionCenter = document.querySelector(".section-center");
-const filterBtns = document.querySelectorAll(".filter-btn");
+const container = document.querySelector(".btn-container");
 
 //load items
 window.addEventListener("DOMContentLoaded", () => {
   displayMenuItems(menu);
+  filtering();
 });
 
-//filter items
-filterBtns.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    const category = e.currentTarget.dataset.id;
-    const menuCategory = menu.filter((menuItem) => {
-      if (menuItem.category === category) {
-        return menuItem;
+function filtering() {
+  const categories = menu.reduce(
+    (values, item) => {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      return values;
+    },
+    ["All"]
+  );
+  const categoryBtns = categories
+    .map((category) => {
+      return `<button class="filter-btn" type="button" data-id= ${category}>${category}</button>`;
+    })
+    .join("");
+  container.innerHTML = categoryBtns;
+
+  const filterBtns = container.querySelectorAll(".filter-btn");
+  //filter items
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const category = e.currentTarget.dataset.id;
+      const menuCategory = menu.filter((menuItem) => {
+        if (menuItem.category === category) {
+          return menuItem;
+        }
+      });
+      if (category === "All") {
+        displayMenuItems(menu);
+      } else {
+        displayMenuItems(menuCategory);
       }
     });
-    if (category === "All") {
-      displayMenuItems(menu);
-    } else {
-      displayMenuItems(menuCategory);
-    }
   });
-});
+}
 
 function displayMenuItems(menuItems) {
   let displayMenu = menuItems.map((item) => {
